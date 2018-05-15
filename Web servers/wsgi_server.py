@@ -37,8 +37,8 @@ class AsyncWSGIRequestHandler(async_webserver.AsyncHTTPRequestHandler):
         self.send_response(self.code, self.msg)
         
         for key, value in response_headers:
-            send_response(key, value)
-        self.headers_end()          
+            self.send_response(key, value)
+        self.end_headers()          
 
     def handle_request(self):
         app = server.get_app()
@@ -49,18 +49,6 @@ class AsyncWSGIRequestHandler(async_webserver.AsyncHTTPRequestHandler):
         [body] = result
         self.send(body)
         self.close()
-        
-
-def parse_args():
-    parser = argparse.ArgumentParser("Simple asynchronous web-server")
-    parser.add_argument("--host", dest="host", default="127.0.0.1")
-    parser.add_argument("--port", dest="port", type=int, default=9002)
-    parser.add_argument("--log", dest="loglevel", default="info")
-    parser.add_argument("--logfile", dest="logfile", default=None)
-    parser.add_argument("-w", dest="nworkers", type=int, default=1)
-    parser.add_argument("-r", dest="document_root", default="/")
-    parser.add_argument("-app", dest="application", help="application:module")
-    return parser.parse_args()
 
        
 if __name__ == '__main__':
