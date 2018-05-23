@@ -25,27 +25,29 @@ class AsyncWSGIRequestHandler(async_webserver.AsyncHTTPRequestHandler):
         env['wsgi.multithread']  = False
         env['wsgi.multiprocess'] = False
         env['wsgi.run_once']     = False
-        env['REQUEST_METHOD']    = self.request_method
-        env['PATH_INFO']         = self.path
-        env['SERVER_NAME']       = self.server_name
-        env['SERVER_PORT']       = str(self.server_port)
+        env['REQUEST_METHOD']    = self.method
+        env['PATH_INFO']         = self.uri
+        env['SERVER_NAME']       = self.host
+        env['SERVER_PORT']       = str(self.port)
 
         return env
 
     def start_response(self, status, response_headers, exc_info=None):
         self.code, self.msg = status.split(" ", 1)
+        print(self.code, self.msg)
         self.send_response(self.code, self.msg)
         
         for key, value in response_headers:
             self.send_response(key, value)
-        self.end_headers()          
+        self.end_headers()
 
     def handle_request(self):
         app = server.get_app()
-        result = app(self.get_environ, self.start_response)
+        result = app(self.get_environ(), self.start_response)
         self.finish_response(result)
 
     def finish_response(self, result):
+        print(result)
         [body] = result
         self.send(body)
         self.close()

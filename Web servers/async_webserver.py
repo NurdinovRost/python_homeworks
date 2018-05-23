@@ -49,6 +49,8 @@ class AsyncHTTPRequestHandler(asynchat.async_chat):
         self.reading_headers = True
         self.req_data = ""
         self.post_data = bytes()
+        self.host = '127.0.0.1'
+        self.port = 9002       
 
 
     def collect_incoming_data(self, data):
@@ -213,7 +215,7 @@ class AsyncHTTPRequestHandler(asynchat.async_chat):
 
 
 class AsyncServer(asyncore.dispatcher):
-    def __init__(self, host="127.0.0.1", port=9000, handler=None):
+    def __init__(self, host="127.0.0.1", port=9002, handler=None):
         asyncore.dispatcher.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.host = host
@@ -241,7 +243,7 @@ class AsyncServer(asyncore.dispatcher):
 def parse_args():
     parser = argparse.ArgumentParser("Simple asynchronous web-server")
     parser.add_argument("--host", dest="host", default="127.0.0.1")
-    parser.add_argument("--port", dest="port", type=int, default=9001)
+    parser.add_argument("--port", dest="port", type=int, default=9002)
     parser.add_argument("--log", dest="loglevel", default="info")
     parser.add_argument("--logfile", dest="logfile", default=None)
     parser.add_argument("-w", dest="nworkers", type=int, default=1)
