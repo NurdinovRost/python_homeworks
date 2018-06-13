@@ -5,3 +5,4 @@ pytz==2018.4
 uWSGI==2.0.15
 django-widget-tweaks==1.4.1
 django-widget-tweaks==1.4.1
+django-wysiwyg==0.8.0
