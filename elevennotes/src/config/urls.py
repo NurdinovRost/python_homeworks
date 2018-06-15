@@ -22,6 +22,8 @@ urlpatterns = [
     
     path('notes/', include('notes.urls', namespace='notes')),
     
+    path('api/', include('api.urls', namespace='api')),
+    
     path('accounts/', include('accounts.urls', namespace='accounts')),
     
     path('admin/', admin.site.urls),
